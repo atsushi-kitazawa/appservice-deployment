@@ -1,0 +1,16 @@
+name: echo action
+
+on: [push]
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: echo hello
+        run: echo hello
+  bye:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: echo
+        run: echo bye
