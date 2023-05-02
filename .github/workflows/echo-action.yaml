@@ -9,7 +9,7 @@ jobs:
       - name: echo hello
         run: echo hello
   bye:
-    needs: build
+    needs: hello
     runs-on: ubuntu-latest
     steps:
       - name: echo
