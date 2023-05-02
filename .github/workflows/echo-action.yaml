@@ -1,16 +1,25 @@
-name: echo action
+name: Java CI
 
 on: [push]
 
 jobs:
-  hello:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: echo hello
-        run: echo hello
-  bye:
-    needs: hello
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: "11"
+          distribution: "adopt"
+      - name: Build with Maven
+        run: mvn --batch-mode --update-snapshots verify
+
+  echo:
+    needs: build
     runs-on: ubuntu-latest
+
     steps:
       - name: echo
-        run: echo bye
+        run: echo github-action-trainig
