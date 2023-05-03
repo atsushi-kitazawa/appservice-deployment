@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "webAppName": {
+        "value": "appservice-web-golang"
+      },
+      "sku": {
+        "value": "B1"
+      },
+      "linuxFxVersion": {
+        "value": "GO|1.19"
+      },
+      "repositoryUrl": {
+        "value": "https://github.com/atsushi-kitazawa/appservice-web.git"
+      },
+      "branch": {
+        "value": "main"
+      }
+    }
+  }

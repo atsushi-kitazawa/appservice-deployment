@@ -6,6 +6,12 @@ on:
       - main
 
 jobs:
+  create-repo:
+    runs-on: ubuntu-latest
+    steps:
+    - name: create git repository
+      run: echo create repo
+
   deploy:
     runs-on: ubuntu-latest
     steps:
@@ -21,5 +27,11 @@ jobs:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ secrets.AZURE_RG }}
         template: ./main.bicep
-        #parameters: 'storagePrefix=mystore storageSKU=Standard_LRS'
+        parameters: 'parameter.json'
         failOnStdErr: false
+
+  functions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: call azure functions
+        run: echo call functions
