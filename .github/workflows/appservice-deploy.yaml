@@ -6,15 +6,12 @@ on:
       - main
 
 jobs:
-  create-repo:
-    runs-on: ubuntu-latest
-    steps:
-    - name: create git repository
-      run: echo create repo
-
   deploy:
     runs-on: ubuntu-latest
     steps:
+    - name: create git repo
+      run: echo create repo
+
     - uses: actions/checkout@main
 
     - uses: azure/login@v1
@@ -31,6 +28,7 @@ jobs:
         failOnStdErr: false
 
   functions:
+    needs: deploy
     runs-on: ubuntu-latest
     steps:
       - name: call azure functions
