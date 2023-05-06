@@ -20,7 +20,7 @@ jobs:
           -H "Authorization: Bearer ${{ secrets.GH_TOKEN }}"\
           -H "X-GitHub-Api-Version: 2022-11-28" \
           ${{ secrets.GH_ORG }} \
-          -d '{"name":"Hello-World-Test","description":"This is your first repository","homepage":"https://github.com","private":false,"has_issues":true,"has_projects":true,"has_wiki":true}'
+          -d '{"name":"${{ github.event.inputs.repository_name }}","description":"This is your first repository","homepage":"https://github.com","private":false,"has_issues":true,"has_projects":true,"has_wiki":true}'
 
     - uses: actions/checkout@main
 
@@ -28,14 +28,14 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: deploy
-      uses: azure/arm-deploy@v1
-      with:
-        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-        resourceGroupName: ${{ secrets.AZURE_RG }}
-        template: ./main.bicep
-        parameters: 'parameter.json'
-        failOnStdErr: false
+    #- name: deploy
+    #  uses: azure/arm-deploy@v1
+    #  with:
+    #    subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+    #    resourceGroupName: ${{ secrets.AZURE_RG }}
+    #    template: ./main.bicep
+    #    parameters: 'parameter.json'
+    #   failOnStdErr: false
 
   functions:
     needs: deploy
