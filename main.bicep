@@ -5,9 +5,13 @@ param repositoryUrl string = ''
 param branch string = ''
 param location string = resourceGroup().location
 param clientId string
+@secure()
+param clientSecret string
 param tenantId string
+
 var appServicePlanName = toLower('AppServicePlan-${webAppName}')
 var webSiteName = toLower('wapp-${webAppName}')
+
 resource appServicePlan 'Microsoft.Web/serverfarms@2020-06-01' = {
   name: appServicePlanName
   location: location
@@ -29,30 +33,24 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
     }
   }
 }
-resource srcControls 'Microsoft.Web/sites/sourcecontrols@2021-01-01' = {
-  name: '${appService.name}/web'
-  properties: {
-    repoUrl: repositoryUrl
-    branch: branch
-    isManualIntegration: true
-  }
-}
-resource authSettings 'Microsoft.Web/sites/config@2021-02-01' = {
-  name: '${webAppName}/authsettings'
+resource authSettings 'Microsoft.Web/sites/config@2022-03-01' = {
+  parent: appService
+  name: 'authsettings'
   properties: {
     enabled: true
     unauthenticatedClientAction: 'RedirectToLoginPage'
     defaultProvider: 'AzureActiveDirectory'
     clientId: clientId
     issuer: 'https://sts.windows.net/${tenantId}/'
-    allowedAudiences: [
-      'https://${webAppName}.azurewebsites.net'
-    ]
-    additionalLoginParams: [
-      {
-        name: 'resource'
-        value: 'https://graph.microsoft.com'
-      }
-    ]
+    clientSecret: clientSecret
+  }
+}
+resource srcControls 'Microsoft.Web/sites/sourcecontrols@2021-01-01' = {
+  parent: appService
+  name: 'web'
+  properties: {
+    repoUrl: repositoryUrl
+    branch: branch
+    isManualIntegration: true
   }
 }
