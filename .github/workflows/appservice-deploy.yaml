@@ -7,6 +7,10 @@ on:
         description: repository name
         required: true
         default: golang-appservice-test-repo
+      client_id:
+        required: true
+      tenant_id:
+        required: true
 
 jobs:
   deploy:
@@ -35,7 +39,7 @@ jobs:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ secrets.AZURE_RG }}
         template: ./main.bicep
-        parameters: parameter.json repositoryUrl=${{ env.github_url }}
+        parameters: parameter.json repositoryUrl=${{ env.github_url }} clientId=${{ github.event.inputs.client_id }} tenantId=${{ github.event.inputs.tenant_id }}
         failOnStdErr: false
 
   functions:
